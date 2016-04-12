@@ -10,9 +10,15 @@ MAINTAINER Dag Heradstveit <dagherad@gmail.com>
 
 # Become root, add jenkins to docker group, and drop back to jenkins.
 USER root
-RUN groupadd docker && \
-    usermod -a -G docker jenkins && \
+
+# Install Docker (pipelines need this)
+RUN curl -sSL https://get.docker.com/ | sh
+
+# Make the host socket available to jenkins
+RUN usermod -a -G docker jenkins && \
     groupmod -g 127 docker
+
+# Drop back to jenkins
 USER jenkins
 
 RUN echo "jenkins" | id
