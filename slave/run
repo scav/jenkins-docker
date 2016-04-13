@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Launch with the correct repository.
+# A default repository for localhost is provided
+#
+clear
+
+REPOSITORY=${1-"localhost:5000/jenkins-slave"}
+echo "Launching jenkins-slave from $REPOSITORY"
+
+docker run -v /var/jenkins_home:/var/jenkins_home \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /usr/bin/docker:/bin/docker $REPOSITORY

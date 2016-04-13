@@ -1,0 +1,40 @@
+
+#!/bin/bash
+#
+# Makefile for all images to make sure they are
+# created with the correct GID and NAME for docker.
+#
+# This is not ideal, as images often times are not built
+# on the host they run, but at least this gives the option
+# to supply them while building the images.
+#
+
+clear
+DNAME=${1-"sucker"}
+DGID=$(getent group ${1-"docker"} | cut -d: -f3)
+REPOSITORY=${2-"localhost:1000"}
+
+echo "Starting build of all docker images with docker GROUP as ${1-"docker"} and GID $DOCKERGID"
+
+echo "Building jenkins image"
+docker build -t $REPOSITORY/jenkins \
+--build-arg DOCKERGID=$DGID \
+--build-arg DOCKERGNAME=$DNAME \
+-f=jenkins/Dockerfile .
+
+echo "Building slave image"
+docker build -t $REPOSITORY/jenkins-slave \
+--build-arg DOCKERGID=$DGID \
+--build-arg DOCKERGNAME=$DNAME \
+-f=slave/Dockerfile .
+
+echo "Building gradle image"
+docker build -t $REPOSITORY/gradle \
+-f=gradle-builder/Dockerfile .
+
+
+
+
+
+
+
