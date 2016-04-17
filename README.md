@@ -52,6 +52,14 @@ node('docker-slave') {
     }
 }
 ```
+
+***Important if you are runnig from a Jenkinsfile you will be greeted with the following message:***
+```groovy
+
+```
+This is because you are executing scripts from git and not internally by a user who can create jobs.
+You solve this by going to **Manage Jenkins » In-process Script Approval** where you can approve this action and it will work.
+
 ## Plugins
 The plugins.txt file is rather big, I just took everything from my jenkins install (used to make this) and dumped it into that file.
 
