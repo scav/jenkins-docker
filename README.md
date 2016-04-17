@@ -32,6 +32,13 @@ In the root file of the project you will find a file named *build*. Use this to 
 sh build docker localhost:5000
 ```
 
+If you are greeted with this error after trying to start jenkins
+```bash 
+touch: cannot touch ‘/var/jenkins_home/copy_reference_file.log’: Permission denied
+Can not write to /var/jenkins_home/copy_reference_file.log. Wrong volume permissions?
+```
+do a sudo chown -R 1000 /var/jenkins_home
+
 #### Building something
 Here is an example job that can be built using the provided Gradle builder. Replace localhost:5000 with the path to your repository and it should build. It will not do more than build for now.
 ```bash
@@ -45,6 +52,14 @@ node('docker-slave') {
     }
 }
 ```
+
+***Important if you are runnig from a Jenkinsfile you will be greeted with the following message:***
+```groovy
+org.jenkinsci.plugins.scriptsecurity.sandbox.RejectedAccessException: Scripts not permitted to use new org.jenkinsci.plugins.docker.commons.credentials.DockerRegistryEndpoint java.lang.String java.lang.String
+```
+This is because you are executing scripts from git and not internally by a user who can create jobs.
+You solve this by going to **Manage Jenkins » In-process Script Approval** where you can approve this action and it will work.
+
 ## Plugins
 The plugins.txt file is rather big, I just took everything from my jenkins install (used to make this) and dumped it into that file.
 
