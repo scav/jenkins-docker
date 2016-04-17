@@ -14,7 +14,7 @@ DNAME=${1-"sucker"}
 DGID=$(getent group ${1-"docker"} | cut -d: -f3)
 REPOSITORY=${2-"localhost:1000"}
 
-echo "Starting build of all docker images with docker GROUP as ${1-"docker"} and GID $DOCKERGID"
+echo "Starting build of all docker images with docker GROUP as ${1-"docker"} and GID $DGID"
 
 echo "Building jenkins image"
 docker build -t $REPOSITORY/jenkins \
