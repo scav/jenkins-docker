@@ -14,11 +14,13 @@ ARG DOCKERGNAME
 # Become root, add jenkins to docker group, and drop back to jenkins.
 USER root
 
-# Install Docker (for pipeline)
-RUN curl -sSL https://get.docker.com/ | sh
+# Install Docker (for pipeline) and Docker Compose for services during builds
+RUN curl -sSL https://get.docker.com/ | sh && \
+    curl -L https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
 
 # Make the host socket available to jenkins
-RUN usermod -a -G $DOCKERGNAME jenkins && \
+    usermod -a -G $DOCKERGNAME jenkins && \
     groupmod -g $DOCKERGID $DOCKERGNAME
 
 # Drop back to jenkins

@@ -1,5 +1,5 @@
 # jenkins-docker
-A small repository with Dockerfile's for Jenkins. It basically gives you a jenkins 2 environment with one slave and a one Gradle builder. There is also a demo project called [jenkins-docker-test](https://github.com/scav/jenkins-docker-test) used for testing and its a good place to start seeing how things are built.
+A small repository with Dockerfile's for Jenkins. It basically gives you a jenkins 2 environment with one ssh enabled jenkins slave with docker and docker-compose, as well as one Gradle builder. There is also a demo project called [jenkins-docker-test](https://github.com/scav/jenkins-docker-test) used for testing and its a good place to start seeing how things are built.
 
 A few things to consider before using this.
  * These images share unix:///var/run/docker.sock 
@@ -10,6 +10,12 @@ A few things to consider before using this.
 
 When running Jenkins locally on the host, make sure Jenkins is part of the docker group to give access to the docker socket.
 
+#### Notice
+These images, if you modify and spawn a lot of containers, will use a lot of disk space.  
+If you run out, remove stale containers with this command
+ ```bash
+    docker rm -v $(docker ps -a -q -f status=exited)
+ ```
 
 ## Building the images
 Building the images is as easy as executing a bash script and providing some basic info, but first you should set up a repository.
@@ -60,10 +66,14 @@ org.jenkinsci.plugins.scriptsecurity.sandbox.RejectedAccessException: Scripts no
 This is because you are executing scripts from git and not internally by a user who can create jobs.
 You solve this by going to **Manage Jenkins » In-process Script Approval** where you can approve this action and it will work.
 
-## Plugins
+## Notes
+
+Some final notes, information or gotchas.
+
+### Plugins
 The plugins.txt file is rather big, I just took everything from my jenkins install (used to make this) and dumped it into that file.
 
-## Todo
+### Todo
 In no particular order...
  * Add plugins.txt to [jenkins/Dockerfile](https://github.com/scav/jenkins-docker/blob/master/jenkins/Dockerfile)
  * Actually build something and push

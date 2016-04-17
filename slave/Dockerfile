@@ -10,13 +10,16 @@ ARG DOCKERGID
 ARG DOCKERGNAME
 
 RUN addgroup -g $DOCKERGID $DOCKERGNAME && \
-    addgroup -g 1000 jenkins
+    addgroup -g 1000 jenkins && \
 
 # Install dependencies
-RUN apk upgrade --update --no-cache && apk add libstdc++ bash git openssh openjdk8 docker
+    apk upgrade --update --no-cache && apk add libstdc++ bash git openssh openjdk8 docker py-pip && \
+    
+# Install docker compose
+    pip install docker-compose && \    
 
 # Disable root, add jenkins user and create ssh key
-RUN passwd -d root && \      
+    passwd -d root && \      
     adduser -D -s /bin/ash jenkins -h /var/jenkins_home -G $DOCKERGNAME && \
     echo "jenkins:jenkins" | chpasswd && \
     chown -R jenkins /var/jenkins_home && \	
