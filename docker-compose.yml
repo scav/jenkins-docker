@@ -1,0 +1,23 @@
+version: '2'
+services:
+  jenkins-slave:
+    image: localhost:5000/jenkins-slave
+    container_name: jenkins-slave
+    ports:
+     - "22:22"
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - /usr/bin/docker:/bin/docker
+  jenkins:
+    image: localhost:5000/jenkins
+    container_name: jenkins
+    ports:
+     - "80:8080"
+     - "50000:50000"
+    links:
+     - jenkins-slave
+    volumes:
+     - /var/jenkins_home:/var/jenkins_home
+     - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+     - jenkins-slave
