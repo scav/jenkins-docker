@@ -32,6 +32,10 @@ echo "Building gradle image"
 docker build -t $REPOSITORY/gradle \
 -f=gradle-builder/Dockerfile .
 
+echo "Building compose image"
+docker build -t $REPOSITORY/docker-compose \
+-f=docker-compose/Dockerfile .
+
 
 
 
