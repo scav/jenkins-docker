@@ -29,7 +29,7 @@ then
 fi
 
 echo "Building jenkins image"
-echo docker build -t $REPOSITORY/jenkins \
+docker build -t $REPOSITORY/jenkins \
 ${PROXY} \
 ${PROXYS} \
 --build-arg DOCKERGID=$DGID \
