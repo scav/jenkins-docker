@@ -34,8 +34,10 @@ docker run -d -p 5000:5000 --restart=always --name registry \
 All images can be built by the same command if you want to. Just specify the name of your docker group and the repository you want to push images to after they are built.
 
 In the root file of the project you will find a file named *build*. Use this to build the images. If you see some red text, that is normal, if it fails, however, you can just try again and it should work.
+If you are building from behind a proxy server, you can add that to the end of the build file.
 ```bash
 sh build docker localhost:5000
+sh build docker localhost:5000 http://proxy.example.org
 ```
 
 If you are greeted with this error after trying to start jenkins

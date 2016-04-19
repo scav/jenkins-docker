@@ -8,33 +8,50 @@
 # on the host they run, but at least this gives the option
 # to supply them while building the images.
 #
+# Example usage
+# $ sh build docker localhost:5000 http://proxy.example.org
+#
 
 clear
 DNAME=${1-"sucker"}
 DGID=$(getent group ${1-"docker"} | cut -d: -f3)
 REPOSITORY=${2-"localhost:1000"}
+P=$3
 
-echo "Starting build of all docker images with docker GROUP as ${1-"docker"} and GID $DGID"
+echo "Starting build of all docker images with docker group ${1-"docker"} and id $DGID"
+
+# Check if the optional proxy server is supplied as an argument.
+if [ $# -eq 3 ]
+then 
+    echo "Using optional proxy server at ${3}"
+    PROXY="--build-arg HTTP_PROXY=${3}"
+fi
 
 echo "Building jenkins image"
-docker build -t $REPOSITORY/jenkins \
+echo docker build -t $REPOSITORY/jenkins \
+${PROXY} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
 
+
 echo "Building slave image"
 docker build -t $REPOSITORY/jenkins-slave \
+${PROXY} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
 
 echo "Building gradle image"
 docker build -t $REPOSITORY/gradle \
+${PROXY} \
 -f=gradle-builder/Dockerfile .
 
 echo "Building compose image"
 docker build -t $REPOSITORY/docker-compose \
+${PROXY} \
 -f=docker-compose/Dockerfile .
+
 
 
 
