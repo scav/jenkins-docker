@@ -25,19 +25,21 @@ if [ $# -eq 3 ]
 then 
     echo "Using optional proxy server at ${3}"
     PROXY="--build-arg HTTP_PROXY=${3}"
+    PROXYS="--build-arg https_proxy=${3}"
 fi
 
 echo "Building jenkins image"
 echo docker build -t $REPOSITORY/jenkins \
 ${PROXY} \
+${PROXYS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
 
-
 echo "Building slave image"
 docker build -t $REPOSITORY/jenkins-slave \
 ${PROXY} \
+${PROXYS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
@@ -45,11 +47,13 @@ ${PROXY} \
 echo "Building gradle image"
 docker build -t $REPOSITORY/gradle \
 ${PROXY} \
+${PROXYS} \
 -f=gradle-builder/Dockerfile .
 
 echo "Building compose image"
 docker build -t $REPOSITORY/docker-compose \
 ${PROXY} \
+${PROXYS} \
 -f=docker-compose/Dockerfile .
 
 
