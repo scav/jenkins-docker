@@ -31,7 +31,6 @@ fi
 echo "Building jenkins image"
 docker build -t $REPOSITORY/jenkins \
 ${PROXY} \
-${PROXYS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
@@ -39,7 +38,6 @@ ${PROXYS} \
 echo "Building slave image"
 docker build -t $REPOSITORY/jenkins-slave \
 ${PROXY} \
-${PROXYS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
@@ -47,7 +45,6 @@ ${PROXYS} \
 echo "Building gradle image"
 docker build -t $REPOSITORY/gradle \
 ${PROXY} \
-${PROXYS} \
 -f=gradle-builder/Dockerfile .
 
 echo "Building compose image"
