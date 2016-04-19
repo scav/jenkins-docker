@@ -24,7 +24,6 @@ RUN addgroup -g $DOCKERGID $DOCKERGNAME && \
     
 # Change SSH port
     sed -i 's/^#Port 22.*/Port 2000/' /etc/ssh/sshd_config
-
     
 EXPOSE 2000
 
