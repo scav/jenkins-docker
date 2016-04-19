@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #
 # Makefile for all images to make sure they are
@@ -16,7 +15,6 @@ clear
 DNAME=${1-"sucker"}
 DGID=$(getent group ${1-"docker"} | cut -d: -f3)
 REPOSITORY=${2-"localhost:1000"}
-P=$3
 
 echo "Starting build of all docker images with docker group ${1-"docker"} and id $DGID"
 
@@ -25,12 +23,15 @@ if [ $# -eq 3 ]
 then 
     echo "Using optional proxy server at ${3}"
     PROXY="--build-arg HTTP_PROXY=${3}"
-    PROXYS="--build-arg HTTPS_PROXY=${3}"
+    PROXYS="--build-arg https_proxy=${3}"
+    PROXYSS="--build-arg http_proxy=${3}"
 fi
 
 echo "Building jenkins image"
 docker build -t $REPOSITORY/jenkins \
 ${PROXY} \
+${PROXYS} \
+${PROXYSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
@@ -38,6 +39,8 @@ ${PROXY} \
 echo "Building slave image"
 docker build -t $REPOSITORY/jenkins-slave \
 ${PROXY} \
+${PROXYS} \
+${PROXYSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
@@ -45,18 +48,13 @@ ${PROXY} \
 echo "Building gradle image"
 docker build -t $REPOSITORY/gradle \
 ${PROXY} \
+${PROXYS} \
+${PROXYSS} \
 -f=gradle-builder/Dockerfile .
 
 echo "Building compose image"
 docker build -t $REPOSITORY/docker-compose \
 ${PROXY} \
 ${PROXYS} \
+${PROXYSS} \
 -f=docker-compose/Dockerfile .
-
-
-
-
-
-
-
-
