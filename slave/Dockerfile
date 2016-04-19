@@ -20,8 +20,12 @@ RUN addgroup -g $DOCKERGID $DOCKERGNAME && \
     adduser -D -s /bin/ash jenkins -h /var/jenkins_home -G $DOCKERGNAME && \
     echo "jenkins:jenkins" | chpasswd && \
     chown -R jenkins /var/jenkins_home && \	
-    ssh-keygen -A
+    ssh-keygen -A && \
     
-EXPOSE 22
+# Change SSH port
+    sed -i 's/^#Port 22.*/Port 2000/' /etc/ssh/sshd_config
+
+    
+EXPOSE 2000
 
 ENTRYPOINT ["/usr/sbin/sshd", "-D"]
