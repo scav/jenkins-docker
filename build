@@ -25,6 +25,7 @@ then
     PROXY="--build-arg HTTP_PROXY=${3}"
     PROXYS="--build-arg https_proxy=${3}"
     PROXYSS="--build-arg http_proxy=${3}"
+    PROXYSSS="--build-arg http_proxy=${3}"
 fi
 
 echo "Building jenkins image"
@@ -32,6 +33,7 @@ docker build -t $REPOSITORY/jenkins \
 ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
+${PROXYSSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
@@ -41,6 +43,7 @@ docker build -t $REPOSITORY/jenkins-slave \
 ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
+${PROXYSSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
@@ -50,6 +53,7 @@ docker build -t $REPOSITORY/gradle \
 ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
+${PROXYSSS} \
 -f=gradle-builder/Dockerfile .
 
 echo "Building compose image"
@@ -57,4 +61,5 @@ docker build -t $REPOSITORY/docker-compose \
 ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
+${PROXYSSS} \
 -f=docker-compose/Dockerfile .
