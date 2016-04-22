@@ -11,6 +11,8 @@
 # $ sh build docker localhost:5000 http://proxy.example.org
 #
 
+sh build docker localhost:5000 proxy
+
 clear
 DNAME=${1-"sucker"}
 DGID=$(getent group ${1-"docker"} | cut -d: -f3)
@@ -23,9 +25,9 @@ if [ $# -eq 3 ]
 then 
     echo "Using optional proxy server at ${3}"
     PROXY="--build-arg HTTP_PROXY=${3}"
-    PROXYS="--build-arg https_proxy=${3}"
+    PROXYS="--build-arg HTTPS_PROXY=${3}"
     PROXYSS="--build-arg http_proxy=${3}"
-    PROXYSSS="--build-arg http_proxy=${3}"
+    PROXYSSS="--build-arg https_proxy=${3}"
 fi
 
 echo "Building jenkins image"
