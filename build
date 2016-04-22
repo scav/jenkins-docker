@@ -11,8 +11,6 @@
 # $ sh build docker localhost:5000 http://proxy.example.org
 #
 
-sh build docker localhost:5000 proxy
-
 clear
 DNAME=${1-"sucker"}
 DGID=$(getent group ${1-"docker"} | cut -d: -f3)
