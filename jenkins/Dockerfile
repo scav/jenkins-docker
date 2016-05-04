@@ -5,7 +5,7 @@
 # Be aware of the security related issues you may encounter #
 # using this method.                                        #
 #############################################################
-FROM jenkins:2.0
+FROM jenkins:latest
 MAINTAINER Dag Heradstveit <dagherad@gmail.com>
 
 ARG DOCKERGID 
