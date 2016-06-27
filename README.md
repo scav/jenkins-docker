@@ -2,7 +2,7 @@
 A small repository with Dockerfile's for Jenkins. It basically gives you a jenkins 2 environment with one ssh enabled jenkins slave with docker and docker-compose, as well as one Gradle builder. There is also a demo project called [jenkins-docker-test](https://github.com/scav/jenkins-docker-test) used for testing and its a good place to start seeing how things are built.
 
 A few things to consider before using this.
- * These images share unix:///var/run/docker.sock 
+ * These images share unix:///var/run/docker.sock
  * jenkins and jenkins-slave have docker installed
  * Security has not been a priority so far, and there are surely unresolved issues here
  * To enable Docker Pipeline Plugin containers have to be mounted at /var/jenkins_home since this plugin will try to mount the jenkins virtual path to the actual host path.
@@ -23,7 +23,7 @@ Building the images is as easy as executing a bash script and providing some bas
 #### Preparing a local repository (if you do not have one)
 You should have a local repository running to make life easier for you. This is also a great way of getting to know how docker images work while having the ability to start over when ever you like.
 
-Setting this up is as easy as 
+Setting this up is as easy as
 ```bash
 docker run -d -p 5000:5000 --restart=always --name registry \
   -v `pwd`/data:/var/lib/registry \
@@ -41,11 +41,16 @@ sh build docker localhost:5000 http://proxy.example.org
 ```
 
 If you are greeted with this error after trying to start jenkins
-```bash 
+```bash
 touch: cannot touch ‘/var/jenkins_home/copy_reference_file.log’: Permission denied
 Can not write to /var/jenkins_home/copy_reference_file.log. Wrong volume permissions?
 ```
 do a sudo chown -R 1000 /var/jenkins_home
+
+In certain cases, you will be told that the group id exists, in this case, you can change id of the Docker group or add this to your Dockerfile
+```bash
+RUN delgroup $groupname
+```
 
 #### Building something
 Here is an example job that can be built using the provided Gradle builder. Replace localhost:5000 with the path to your repository and it should build. It will not do more than build for now.
@@ -55,7 +60,7 @@ node('docker-slave') {
         stage 'Checkout from git'
         git 'https://github.com/scav/jenkins-docker-test.git'
         stage 'Running tests'
-        
+
         sh 'gradle clean build'
     }
 }
