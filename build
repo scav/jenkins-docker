@@ -20,7 +20,7 @@ echo "Starting build of all docker images with docker group ${1-"docker"} and id
 
 # Check if the optional proxy server is supplied as an argument.
 if [ $# -eq 3 ]
-then 
+then
     echo "Using optional proxy server at ${3}"
     PROXY="--build-arg HTTP_PROXY=${3}"
     PROXYS="--build-arg HTTPS_PROXY=${3}"
@@ -49,12 +49,20 @@ ${PROXYSSS} \
 -f=slave/Dockerfile .
 
 echo "Building gradle image"
-docker build -t $REPOSITORY/gradle \
+docker build -t $REPOSITORY/gradle-builder \
 ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
 ${PROXYSSS} \
 -f=gradle-builder/Dockerfile .
+
+echo "Building node image"
+docker build -t $REPOSITORY/node-builder \
+${PROXY} \
+${PROXYS} \
+${PROXYSS} \
+${PROXYSSS} \
+-f=node-builder/Dockerfile .
 
 echo "Building compose image"
 docker build -t $REPOSITORY/docker-compose \
