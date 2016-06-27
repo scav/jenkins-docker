@@ -37,6 +37,7 @@ ${PROXYSSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=jenkins/Dockerfile .
+docker push $REPOSITORY/jenkins
 
 echo "Building slave image"
 docker build -t $REPOSITORY/jenkins-slave \
@@ -47,6 +48,7 @@ ${PROXYSSS} \
 --build-arg DOCKERGID=$DGID \
 --build-arg DOCKERGNAME=$DNAME \
 -f=slave/Dockerfile .
+docker push $REPOSITORY/jenkins-slave
 
 echo "Building gradle image"
 docker build -t $REPOSITORY/gradle-builder \
@@ -55,6 +57,7 @@ ${PROXYS} \
 ${PROXYSS} \
 ${PROXYSSS} \
 -f=gradle-builder/Dockerfile .
+docker push $REPOSITORY/gradle-builder
 
 echo "Building node image"
 docker build -t $REPOSITORY/node-builder \
@@ -62,7 +65,10 @@ ${PROXY} \
 ${PROXYS} \
 ${PROXYSS} \
 ${PROXYSSS} \
+--build-arg DOCKERGID=$DGID \
+--build-arg DOCKERGNAME=$DNAME \
 -f=node-builder/Dockerfile .
+docker push $REPOSITORY/node-builder
 
 echo "Building compose image"
 docker build -t $REPOSITORY/docker-compose \
@@ -71,3 +77,4 @@ ${PROXYS} \
 ${PROXYSS} \
 ${PROXYSSS} \
 -f=docker-compose/Dockerfile .
+docker push $REPOSITORY/docker-compose
