@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 ARG DOCKERGID 
-ARG JENKINSGID 
+ARG JENKINSGID=1000
 
 RUN apt-get update && \
 	apt-get -y install apt-transport-https ca-certificates && \
@@ -15,7 +15,3 @@ RUN apt-get update && \
 
 RUN mkdir /.docker && \
     chown $JENKINSGID:$DOCKERGID /.docker
-
-	
-
-
